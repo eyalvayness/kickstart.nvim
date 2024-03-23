@@ -537,7 +537,26 @@ require('lazy').setup({
       local servers = {
         -- clangd = {},
         -- gopls = {},
-        pylsp = {},
+        pylsp = {
+          settings = {
+            pylsp = {
+              -- configurationSources = 'black',
+              plugins = {
+                pycodestyle = {
+                  maxLineLength = 80,
+                },
+                flake8 = {
+                  enabled = true,
+                  maxLineLength = 80,
+                },
+                black = {
+                  enabled = true,
+                  line_length = 80,
+                },
+              },
+            },
+          },
+        },
         -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -619,7 +638,7 @@ require('lazy').setup({
       formatters_by_ft = {
         lua = { 'stylua' },
         -- Conform can also run multiple formatters sequentially
-        python = { 'isort', 'black' },
+        -- python = { 'isort', 'black' },
         --
         -- You can use a sub-list to tell conform to run *until* a formatter
         -- is found.
