@@ -193,6 +193,24 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
+-- Creates automatic header guarding when entering a new .h file
+vim.api.nvim_create_autocmd({ 'BufNewFile' }, {
+  pattern = { '*.h' },
+  -- command = "echo 'Entering a C or C++ file'",
+  callback = function()
+    local header_name = vim.fn.expand '%:t'
+    local guard_name = string.upper(header_name):gsub('%.', '_')
+    guard_name = string.format('__%s__', guard_name)
+
+    vim.api.nvim_buf_set_lines(0, 0, 1, 0, { string.format('#ifndef %s', guard_name), string.format('#define %s', guard_name), '', '', '', '#endif' })
+    -- local rc = vim.api.nvim_win_get_cursor(0)
+    vim.api.nvim_win_set_cursor(0, { 4, 0 })
+    -- vim.keymap.set('n', '<leader>hg', function()
+    --   print(rc)
+    -- end, { desc = 'TEST' })
+  end,
+})
+
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
 --  See `:help vim.highlight.on_yank()`
